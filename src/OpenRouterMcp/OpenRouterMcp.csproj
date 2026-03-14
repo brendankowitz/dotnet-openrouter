@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>dotnet-openrouter</ToolCommandName>
+
+    <!-- Package Metadata -->
+    <PackageId>OpenRouterMcp</PackageId>
+    <PackageType>McpServer</PackageType>
+    <Authors>OpenRouter MCP Contributors</Authors>
+    <Description>Dual-mode OpenRouter integration tool supporting both direct CLI operations and MCP server mode for AI assistants. Generate images and audio via OpenRouter's unified API through command line or Model Context Protocol.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/brendankowitz/dotnet-openrouter</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/brendankowitz/dotnet-openrouter</PackageProjectUrl>
+    <PackageTags>openrouter;mcp;model-context-protocol;cli;ai;image-generation;audio-generation;dotnet-tool;claude</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ModelContextProtocol" Version="0.8.0-preview.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.0.0" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+    <PackageReference Include="GitVersion.MsBuild" Version="6.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\.mcp\server.json" Pack="true" PackagePath="/.mcp/" />
+  </ItemGroup>
+
+  <!-- Update server.json version before packing -->
+  <Target Name="UpdateServerJsonVersion" BeforeTargets="GenerateNuspec">
+    <PropertyGroup>
+      <ServerJsonPath>$(MSBuildProjectDirectory)\..\..\.mcp\server.json</ServerJsonPath>
+      <ServerJsonContent>$([System.IO.File]::ReadAllText($(ServerJsonPath)))</ServerJsonContent>
+      <ServerJsonContent>$(ServerJsonContent.Replace('"version": "0.0.0"', '"version": "$(PackageVersion)"'))</ServerJsonContent>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(ServerJsonPath)" Lines="$(ServerJsonContent)" Overwrite="true" />
+  </Target>
+
+</Project>
