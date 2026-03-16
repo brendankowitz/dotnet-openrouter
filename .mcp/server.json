@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/registry/refs/heads/main/schemas/v0/server.schema.json",
+  "description": "Dual-mode OpenRouter integration tool supporting both direct CLI operations and MCP server mode for AI assistants. Generate images and audio via OpenRouter's unified API.",
+  "name": "io.github.brendankowitz/dotnet-openrouter",
+  "version": "0.0.0",
+  "packages": [
+    {
+      "registryType": "nuget",
+      "registryBaseUrl": "https://api.nuget.org",
+      "identifier": "OpenRouterMcp",
+      "version": "0.0.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        "mcp"
+      ],
+      "environmentVariables": []
+    }
+  ],
+  "repository": {
+    "url": "https://github.com/brendankowitz/dotnet-openrouter",
+    "source": "github"
+  }
+}
